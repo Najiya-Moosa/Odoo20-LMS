@@ -1,0 +1,106 @@
+<?xml version="1.0" ?>
+<odoo>
+    <record id="lms_model_action" model="ir.actions.act_window">
+        <field name="name">Course Enrollment</field>
+        <field name="res_model">lms.enrollment</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <record id="lms_enrollment_list" model="ir.ui.view">
+        <field name="name">student.enrollment.list</field>
+        <field name="model">lms.enrollment</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="reference"/>
+                <field name="state"/>
+                <field name="date"/>
+                <field name="student_id"/>
+                <field name="due_date"/>
+                <field name="course_id"/>
+
+            </list>
+        </field>
+    </record>
+    <record id="lms_enrollment_form_view" model="ir.ui.view">
+        <field name="name">lms.enrollment.form</field>
+        <field name="model">lms.enrollment</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                        <button name="button_confirm" class="btn btn-primary" invisible="state=='confirmed' or state=='cancelled' or state=='done'" type="object" string="Confirm"/>
+                        <button name="button_done"  invisible="state=='draft' or state=='cancelled' or state=='done'" class="btn btn-primary" type="object" string="Done"/>
+                        <button name="button_cancel"  invisible="state=='cancelled'" type="object" string="cancel"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft, confirmed, done" options="{'clickable': '1'}"/>
+                </header>
+                <sheet>
+                    <widget name="web_ribbon" title="enrolled" bg_color="text-bg-success" invisible="state=='confirmed' or state=='draft' or state=='cancelled'"/>
+                    <h1><field placeholder="Reference " name="reference"/></h1>
+                    <group>
+
+                        <group>
+<!--                            <field name="reference"/>-->
+                            <field name="reference_id" readonly="state=='done' or state=='confirmed' or state=='cancelled'"/>
+                            <field name="course_id" readonly="state=='done' or state=='confirmed' or state=='cancelled'"/>
+                            <field name="student_id" readonly="1" force_save="1"/>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="course_fee"  readonly="state=='done' or state=='confirmed' or state=='cancelled'"  />
+                            <field name="batch_id" domain="[('course_id','=',course_id)]" readonly="state=='done' or state=='confirmed' or state=='cancelled'"/>
+                        </group>
+                        <group>
+                                <field name="date" readonly="state=='done' or state=='confirmed' or state=='cancelled'"/>
+                                <field name="due_date" readonly="state=='done' or state=='confirmed' or state=='cancelled'"/>
+                                <field name="invoice_id" />
+                                <field name="is_lead" readonly="state=='done' or state=='confirmed' or state=='cancelled'"/>
+                                <field name="date_of_birth" force_save="1"/>
+                                <field name="company_id" readonly="state=='done' or state=='confirmed' or state=='cancelled'"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="scholarships">
+                            <field name="scholarship_ids"
+                                                context="{'default_stage_selection': 'confirmed'}">
+                                <list>
+                                    <field name="name"/>
+<!--                                    <field name="currency_id" invisible="1"/>-->
+                                    <field name="discount_amount" widget="monetary"/>
+                                    <field name="stage_selection"/>
+                                </list>
+
+                            </field>
+
+                        </page>
+                        <page string="Description">
+                                <field name="description"/>
+
+                        </page>
+                        <page string="Terms and conditions">
+                            <field name="terms_and_conditions"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+    <record id="property_list_view_search" model="ir.ui.view">
+        <field name="name">estate.property.search</field>
+        <field name="model">lms.enrollment</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="reference"/>
+                <field name="student_id" />
+                <field name="course_id"/>
+                <field name="course_fee" widget="monetary"/>
+                <field name="date"/>
+                <field name="batch_id"/>
+
+                <group>
+                        <filter string="student"  name="student_id" context="{'group_by':'student_id'}"/>
+                        <filter string="course" name="course_id" context="{'group_by':'course_id'}"/>
+                        <filter string="date of enrollment" name="date" context="{'group_by':'date'}"/>
+                        <filter string="batch" name="batch_id" context="{'group_by':'batch_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+</odoo>

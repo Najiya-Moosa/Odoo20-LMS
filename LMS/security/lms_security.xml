@@ -1,0 +1,21 @@
+<?xml version="1.0"  ?>
+<odoo>
+    <record id="module_category_lms" model="ir.module.category">
+            <field name="name">lms</field>
+    </record>
+    <record id="privilege_lms_access" model="res.groups.privilege">
+            <field name="name">Lms</field>
+            <field name="category_id" ref="module_category_lms"/>
+    </record>
+    <record model="res.groups" id="group_lms_user">
+        <field name="name">User</field>
+        <field name="privilege_id" ref="privilege_lms_access"/>
+        <field name="implied_ids" eval="[Command.link(ref('account.group_account_invoice'))]"/>
+
+    </record>
+    <record model="res.groups" id="group_lms_manager">
+        <field name="name">Manager</field>
+        <field name="privilege_id" ref="privilege_lms_access"/>
+<!--        <field name="implied_ids" eval="[Command.link(ref('group_lms_user'))]"/>-->
+    </record>
+</odoo>

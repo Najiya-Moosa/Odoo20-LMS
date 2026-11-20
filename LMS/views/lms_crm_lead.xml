@@ -1,0 +1,16 @@
+<?xml version="1.0"  ?>
+<odoo>
+    <record id="lms_crm_lead_view_form" model="ir.ui.view">
+        <field name="name">lms crm lead</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+        <field name="arch" type="xml">
+           <!-- Use xpath to locate where to add the new field -->
+           <xpath expr="//field[@name='tag_ids']" position="after">
+               <field name="order_id"/>
+           </xpath>
+        </field>
+    </record>
+
+
+</odoo>

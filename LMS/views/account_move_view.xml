@@ -1,0 +1,17 @@
+<?xml version="1.0"  ?>
+<odoo>
+   <data>
+       <record id="view_invoice_inherit_my_module" model="ir.ui.view">
+           <field name="name">lms invoice</field>
+           <field name="model">account.move</field>
+           <field name="inherit_id" ref="account.view_move_form"/>
+           <field name="arch" type="xml">
+               <!-- Use xpath to locate where to add the new field -->
+               <xpath expr="//field[@name='date']" position="after">
+                   <field name="enrollment_id"/>
+               </xpath>
+           </field>
+       </record>
+   </data>
+</odoo>
+

@@ -1,0 +1,57 @@
+<?xml version="1.0" ?>
+<odoo>
+    <record id="lms_scholarship_model_action" model="ir.actions.act_window">
+        <field name="name">scholarship applications</field>
+        <field name="res_model">lms.scholarship</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <record id="lms_scholarship_list_view" model="ir.ui.view">
+        <field name="name">scholarship.list</field>
+        <field name="model">lms.scholarship</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="enrollment_id"/>
+                <field name="stage_selection"/>
+                <field name="discount_amount" widget="monetary"/>
+            </list>
+        </field>
+    </record>
+    <record id="lms_scholarship_form_view" model="ir.ui.view">
+        <field name="name">scholarship.form</field>
+        <field name="model">lms.scholarship</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="button_approve" class="btn btn-primary" invisible="stage_selection=='first approved' or stage_selection=='rejected' or stage_selection=='pending' or stage_selection=='fully approved'" type="object" string="First Approve"/>
+                    <button name="button_full_approve" class="btn btn-primary" invisible="stage_selection=='pending' or stage_selection=='fully approved' or stage_selection=='rejected' or stage_selection=='confirmed'" type="object" string="Full approve" groups="group_lms_manager"/>
+                                        <button name="button_confirm" class="btn btn-primary" invisible="stage_selection=='first approved' or stage_selection=='rejected' or stage_selection=='confirmed' or stage_selection=='fully approved'" type="object" string="Confirm"/>
+                    <button name="button_reject" invisible="stage_selection=='fully approved' or stage_selection=='rejected'" type="object" string="Reject"/>
+
+
+                    <field name="stage_selection" widget="statusbar" statusbar_visible="pending, confirmed, first approved, fully approved" options="{'clickable': '1'}"/>
+                </header>
+                <sheet>
+                    <widget name="web_ribbon" title="Fully Approved" bg_color="text-bg-success" invisible="stage_selection=='first approved' or stage_selection=='pending' or stage_selection=='rejected' or stage_selection=='confirmed' or stage_selection=='cancelled'"/>
+                    <group>
+                        <group>
+                            <field name="enrollment_id"/>
+                            <field name="name"/>
+                            <field name="student_id"/>
+
+                        </group>
+                        <group>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="discount_amount"/>
+                            <field name="due_date"/>
+                            <field name="company_id"/>
+
+                        </group>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+</odoo>
